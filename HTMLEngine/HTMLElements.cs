@@ -1,6 +1,6 @@
 ﻿namespace HTML
 {
-    public abstract class HtmlElement : ITagged
+    abstract class HtmlElement : ITagged
     {
         public string TagId { get; }
 
@@ -11,16 +11,18 @@
 
         public override string ToString()
         {
-            return $"<{TagId}/>\n";
+            return $"<{TagId}>\n";
         }
     }
 
-    public abstract class NestedHtmlElement : HtmlElement, INested
+    abstract class NestedHtmlElement : ITagged, INested
     {
+        public string TagId { get; }
         public object[] Elements { get; }
 
-        public NestedHtmlElement(string tagId, object[] elements) : base(tagId)
+        public NestedHtmlElement(string tagId, params object[] elements)
         {
+            TagId = tagId;
             Elements = elements;
         }
 
@@ -35,67 +37,65 @@
         }
     }
 
-    class DocumentType
+    class DocumentType : HtmlElement
     {
-        public override string ToString()
+        public DocumentType() : base("br/")
         {
-            return "<!DOCTYPE html>";
         }
     }
 
     class Html : NestedHtmlElement
     {
-        public Html(object[] elements) : base("html", elements)
+        public Html(params object[] elements) : base("html", elements)
         {
         }
-
     }
 
     class Head : NestedHtmlElement
     {
-        public Head(object[] elements) : base("head", elements)
+        public Head(params object[] elements) : base("head", elements)
         {
         }
     }
 
     class Title : NestedHtmlElement
     {
-        public Title(object[] elements) : base("title", elements)
+        public Title(params object[] elements) : base("title", elements)
         {
         }
     }
 
     class Body : NestedHtmlElement
     {
-        public Body(object[] elements) : base("body", elements)
+        public Body(params object[] elements) : base("body", elements)
         {
         }
     }
 
     class Heading : NestedHtmlElement
     {
-        public Heading(object[] elements) : base("h1", elements)
+        public Heading(params object[] elements) : base("h1", elements)
         {
         }
     }
 
     class Paragraph : NestedHtmlElement
     {
-        public Paragraph(object[] elements) : base("p", elements)
+        public Paragraph(params object[] elements) : base("p", elements)
         {
         }
     }
 
     class Italic : NestedHtmlElement
     {
-        public Italic(object[] elements) : base("i", elements)
+        public Italic(params object[] elements) : base("i", elements)
         {
         }
     }
 
     class Bold : NestedHtmlElement
     {
-        public Bold(object[] elements) : base("b", elements)
+        public Bold(params object[] elements) : base("b", elements)
         {
         }
     }
